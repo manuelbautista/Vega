@@ -1,0 +1,126 @@
+OJO SIEMPRE DEJAR EL dotnet watch run  YA QUE PUEDES VER LOS ERRORES MIENTRAS CODEAS Y
+REPUERDA SIEMPRE GUARDAR LOS CAMBIOS CONTROL + S
+
+Correr en development
+set ASPNETCORE_ENVIRONMENT=DEVELOPMENT
+dotnet run
+------------------------------------------
+para no hacer dotnet run a cada rato cuando se modifique el
+server side:
+Agregar al csproj el dotnet watch
+<ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.DotNet.Watcher.Tools" Version="1.0.0" />
+ </ItemGroup>
+luego hacer dotnet restore para descargar el paquete
+luego dotnet watch
+luego dotnet watch run para correr el proyecto
+-----------------------------------------------------
+Agregar entity framework al core desde vs code, agregar paquete al proyecto desde vs code
+1-) dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+2-) dotnet add package Microsoft.EntityFrameworkCore.Design
+3-)agregar al csproj
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.Dotnet" Version="2.0.0" />
+  </ItemGroup>
+------------------------------------------------------
+dotnet restore == para bajar proyectos que estan en el csproj, cuando agregar un itemgroup
+------------------------------------------------------------
+Crear un dbcontext
+1-)    public class VegaDbContext: DbContext
+    {
+  
+      public  VegaDbContext(DbContextOptions<VegaDbContext> options) : base(options) {
+
+                
+        }  
+    }
+ public DbSet<Make> Makes { get; set; }
+
+
+2-) Registrar el servicio con dependecy injection
+using Microsoft.EntityFrameworkCore;
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddDbContext<VegaDbContext>(options => options.UseSqlServer(""))
+----------------------------------------------------------------
+Crear Database
+1-) dotnet ef migrations add InitialModel
+2-) dotnet ef database update
+
+------------------------------------------------------
+Borrar migrations y actualizarlas (en caso de que hagas cambios antes de llevarlos a la DB)
+dotnet ef migrations remove
+dotnet ef migrations add InitialModel
+dotnet ef database update  --> aplicar a la DB si todo esta bien.
+------------------------------------------------------
+actualizar migrations
+dotnet ef database 0
+dotnet ef migrations remove
+
+luego de ser los cambios en el modelo
+
+dotnet ef migrations add ApplyConstraints
+dotnet ef database update
+
+Seeding database
+1-)Crear nuevo migration
+2-)Crear los querys en 20170828101024_SeedDatabase model
+3-)dotnet ef database update
+------------------------------
+dotnet ef database update ApplyConstraints (Model)  --> si quiero ir al model applyconstraints
+
+dotnet ef database update  aplica el ultimo model
+
+-------------------------------------
+Si la carpeta del node module no esta --> npm install
+
+si en la carpeta wwwroot no esta el folder dist, correr el webpack
+--> 1-) webpack --config webpack.config.vendor.js
+    2-)webpack
+    3-)dotnet watch run
+
+------------------------------------------------
+Instalar AutoMapper
+dotnet add package AutoMapper
+dotnet add package AutoMapper.Extensions.Microsoft.DependencyInjection --version 1.
+2.0
+dotnet restore
+
+----------------------------Ahora setear el front end-----------------------------------
+1-)npm install @angular/cli@latest -g   para instalar ultima version cli
+2-)ng new hello-world
+3-)copiar el angular-cli.json del folder helloworld y ponerlo en el root del proyecto
+4-)cambiar el root: y poner "ClientApp"
+5-)npm install @angular/cli@latest --save-dev
+6-)remover el folder del proyecto angular hello world
+7-)entrar al folder \ClientApp\app\components
+8-)ng g component vehicle-form --module ../app.module.shared.ts    -> se debe especificar el module si no dara error ya que el proyecto no tiene el module.ts normal
+9-)remover el test file, spec
+
+----------------------------------------
+import 'rxjs/Rx';  para obtener el map del http.get().map
+
+renombar objecto-- ponerte arriba y presionar f2
+
+(div.form-group>label+input[type='text'].form-control)*3     --> enmet operation
+
+
+[Table("Vehicles")]  ---> para poner nombre custom a la tabla en la clase donde vas a crear la tabla con Code First
+
+----------------------------------------------------------------
+[Route("/api/vehicles")]
+    --> para no tener que poner en el http post de cada metodo
+public class VehiclesController: Controller
+    {
+        
+[HttpPost]
+        
+public IActionResult CreateVehicle(Vehicle vehicle){
+     -- cuando se va a grabar se usa iaction       
+return Ok(vehicle);
+        
+}
+    
+}
+
+Postman Chrome Extension -- Api Build

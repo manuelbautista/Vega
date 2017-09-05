@@ -1,0 +1,8 @@
+npm install -g yo generator-aspnetcore-spa
+yo aspnetcore-spa
+dotnet new angular
+npm install
+dotnet run (en node)
+
+set ASPNETCORE_ENVIRONMENT=DEVELOPMENT
+dotnet run
