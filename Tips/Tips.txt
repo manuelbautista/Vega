@@ -124,3 +124,34 @@ return Ok(vehicle);
 }
 
 Postman Chrome Extension -- Api Build
+
+-----------Instalar Toast--------------------------
+1-)npm install ng2-toasty@4.0.3 --save
+2-)En el webpack.config.vendor.js:
+    'ng2-toasty',
+    'ng2-toasty/bundles/style-bootstrap.css',
+3-)en el terminal:
+webpack --config webpack.config.vendor.js
+webpack
+si te da webpack unreconize:
+npm install -g webpack
+
+4-)en el app.module.shared.ts
+import { ToastyModule } from 'ng2-toasty';
+en el imports[
+       ToastyModule.forRoot(),]
+
+private toastyService: ToastyService
+
+---------------------------Error logins------------------
+1-)sentry.io
+2-)create new project -> Angularjs
+3-)npm install raven-js --save
+4-)agregar 'raven-js' en el webpack.config.vendor.js
+5-)webpack --config webpack.config.vendor.js
+6-)webpack
+7-)import * as Raven from 'raven-js';  en el app.module.shared
+8-)Raven.config('https://ad82ca535ed449f2a111e15ac9dbd682@sentry.io/215493')
+.install();  --> arriba de @NgModule({
+9-)handlerError(error: any): void { 
+	Raven.captureException(error.originalError || error);  en el error-handler.ts

@@ -9,9 +9,9 @@ namespace ASP.NET_Core_Angular.Controllers.Resources
     {
         public int Id { get; set; }
 
-        public ModelResource Model {get;set;}
+        public KeyValuePairResource Model {get;set;}
 
-        public MakeResource Make { get; set; }
+        public KeyValuePairResource Make { get; set; }
 
         public bool IsRegistered { get; set; }
 
@@ -19,11 +19,11 @@ namespace ASP.NET_Core_Angular.Controllers.Resources
 
         public DateTime LastUpdate { get; set; }
 
-        public ICollection<FeatureResource> Features { get; set; }
+        public ICollection<KeyValuePairResource> Features { get; set; }
 
         public VehicleResource()
         {
-            this.Features = new Collection<FeatureResource>();
+            this.Features = new Collection<KeyValuePairResource>();
         }
     }
 }

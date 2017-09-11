@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using ASP.NET_Core_Angular.Controllers.Resources;
 using ASP.NET_Core_Angular.Models;
-using ASP.NET_Core_Angular.Persistence;
+using ASP.NET_Core_Angular.Core;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,11 +20,11 @@ namespace ASP.NET_Core_Angular.Controllers
         }
     
         [HttpGet("/api/features")]
-        public async Task<IEnumerable<FeatureResource>> GetFeatures()
+        public async Task<IEnumerable<KeyValuePairResource>> GetFeatures()
         {
         var features = await context.Features.ToListAsync();
         
-        return mapper.Map<List<Feature>, List<FeatureResource>>(features); 
+        return mapper.Map<List<Feature>, List<KeyValuePairResource>>(features); 
         }
     }
 }
