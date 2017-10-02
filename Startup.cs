@@ -11,6 +11,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using AutoMapper;
 using ASP.NET_Core_Angular.Models;
+using ASP.NET_Core_Angular.Core.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace ASP_NET_Core_Angular
 {
@@ -26,13 +28,27 @@ namespace ASP_NET_Core_Angular
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<PhotoSettings>(Configuration.GetSection("PhotoSettings"));
+            
             services.AddScoped<IVehicleRepository, VehicleRepository>();
+             services.AddScoped<IPhotoRepository, PhotoRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddAutoMapper();
             services.AddDbContext<VegaDbContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:Default"]));
             //Registrar algo en el dependecy Injection
             //services.AddTransient<IRepository, Repository>();
             services.AddMvc();
+             // 1. Add Authentication Services
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            }).AddJwtBearer(options =>
+            {
+                options.Authority = "https://vegaproyecto.auth0.com/";
+                options.Audience = "https://api.vega.com";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,6 +68,9 @@ namespace ASP_NET_Core_Angular
             }
 
             app.UseStaticFiles();
+
+            // 2. Enable authentication middleware
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {

@@ -6,6 +6,7 @@ using ASP.NET_Core_Angular.Core;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ASP.NET_Core_Angular.Controllers
 {

@@ -3,6 +3,7 @@ using ASP.NET_Core_Angular.Models;
 using AutoMapper;
 using System.Linq;
 using System.Collections.Generic;
+using ASP.NET_Core_Angular.Core.Models;
 
 namespace ASP.NET_Core_Angular.Mapping
 {
@@ -10,6 +11,8 @@ namespace ASP.NET_Core_Angular.Mapping
     {
         public MappingProfile() {
             //Domain to API Resource
+             CreateMap<Photo, PhotoResource>(); 
+            CreateMap(typeof(QueryResult<>), typeof(QueryResultResource<>));
             CreateMap<Make, MakeResource>();
             CreateMap<Make, KeyValuePairResource>();
             CreateMap<Model, KeyValuePairResource>();
@@ -25,6 +28,7 @@ namespace ASP.NET_Core_Angular.Mapping
                 .ForMember(vr => vr.Features, opt => opt.MapFrom(v => v.Features.Select(vf => new KeyValuePairResource {Id = vf.Feature.Id, Name = vf.Feature.Name })));
             
             //Api Resource to Domain 
+            CreateMap<VehicleQueryResource, VehicleQuery>();
              CreateMap<SaveVehicleResource, Vehicle>()
             .ForMember(v => v.Id, opt => opt.Ignore())
             .ForMember(v => v.ContactName, opt => opt.MapFrom(vr => vr.Contact.Name))

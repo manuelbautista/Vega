@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using ASP.NET_Core_Angular.Core.Models;
 
 namespace ASP.NET_Core_Angular.Models
 {
@@ -25,10 +26,11 @@ namespace ASP.NET_Core_Angular.Models
         public string ContactPhone{get;set;}
         public DateTime LastUpdate { get; set; }
         public ICollection<VehicleFeature> Features { get; set; }
-
+        public ICollection<Photo> Photos {get;set;}
         public Vehicle()
         {
             this.Features = new Collection<VehicleFeature>();
+            Photos = new Collection<Photo>();
         }
     }
 }

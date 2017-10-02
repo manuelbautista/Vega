@@ -20,6 +20,24 @@ namespace ASP.NETCoreAngular.Migrations
                 .HasAnnotation("ProductVersion", "2.0.0-rtm-26452")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("ASP.NET_Core_Angular.Core.Models.Photo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<int?>("VehicleId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("VehicleId");
+
+                    b.ToTable("Photos");
+                });
+
             modelBuilder.Entity("ASP.NET_Core_Angular.Models.Feature", b =>
                 {
                     b.Property<int>("Id")
@@ -92,7 +110,7 @@ namespace ASP.NETCoreAngular.Migrations
 
                     b.HasIndex("ModelId");
 
-                    b.ToTable("Vehicle");
+                    b.ToTable("Vehicles");
                 });
 
             modelBuilder.Entity("ASP.NET_Core_Angular.Models.VehicleFeature", b =>
@@ -106,6 +124,13 @@ namespace ASP.NETCoreAngular.Migrations
                     b.HasIndex("FeatureId");
 
                     b.ToTable("VehicleFeatures");
+                });
+
+            modelBuilder.Entity("ASP.NET_Core_Angular.Core.Models.Photo", b =>
+                {
+                    b.HasOne("ASP.NET_Core_Angular.Models.Vehicle")
+                        .WithMany("Photos")
+                        .HasForeignKey("VehicleId");
                 });
 
             modelBuilder.Entity("ASP.NET_Core_Angular.Models.Model", b =>

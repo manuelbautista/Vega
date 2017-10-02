@@ -6,6 +6,9 @@ using ASP.NET_Core_Angular.Core;
 using System.Threading.Tasks;
 using System;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using ASP.NET_Core_Angular.Core.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ASP.NET_Core_Angular.Controllers
 {
@@ -23,6 +26,7 @@ namespace ASP.NET_Core_Angular.Controllers
 
         }
         [HttpPut("{id}")]  // /api/vehicles/{id}
+        [Authorize]
         public async Task<IActionResult> UpdateVehicle(int id, [FromBody] SaveVehicleResource vehicleResource)
         {
             if (!ModelState.IsValid)
@@ -46,10 +50,9 @@ namespace ASP.NET_Core_Angular.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateVehicle([FromBody] SaveVehicleResource vehicleResource)
         {
-            throw new Exception();
-
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
@@ -67,6 +70,7 @@ namespace ASP.NET_Core_Angular.Controllers
 
         }
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteVehicle(int id)
         {
             var vehicle = await repository.GetVehicle(id, includeRelated: false);
@@ -94,6 +98,14 @@ namespace ASP.NET_Core_Angular.Controllers
             var vehicleResource = mapper.Map<Vehicle, VehicleResource>(vehicle);
 
             return Ok(vehicleResource);
+        }
+        [HttpGet]
+        public async Task<QueryResultResource<VehicleResource>> GetVehicles(VehicleQueryResource filterResource)
+        {
+            var filter = mapper.Map<VehicleQueryResource, VehicleQuery>(filterResource);
+            var queryResult = await repository.GetVehicles(filter);
+
+            return mapper.Map<QueryResult<Vehicle>, QueryResultResource<VehicleResource>>(queryResult);
         }
     }
 }
