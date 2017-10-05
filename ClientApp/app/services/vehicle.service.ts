@@ -1,5 +1,6 @@
+import { AuthHttp } from 'angular2-jwt';
 import { SaveVehicle } from './../models/vehicle';
-import { Http } from '@angular/http';
+import { Http, RequestOptions,Headers } from '@angular/http';
 import { Injectable } from '@angular/core';
 import 'rxjs/Rx';
 
@@ -7,10 +8,24 @@ import 'rxjs/Rx';
 export class VehicleService {
   private readonly vehiclesEndpoint = '/api/vehicles';
 
-  constructor(private http: Http) { }
+  constructor(private http: Http, private authHtpp: AuthHttp) { }
 
+      // get headers() {
+      //   var superHeaders= new  Headers({'Content-Type': 'application/json'});
+      //     // Set the default 'Content-Type' header
+      //     const token = localStorage.getItem('id_token');
+      //     if(token) {
+      //       superHeaders.append('Authorization','Bearer '+ token)
+      //       var options = new RequestOptions({headers: superHeaders});
+
+      //       return options;
+      //     } 
+      //     return new RequestOptions({});
+      // }
+  
+      
   getVehicles(filter: any) {
-    return this.http.get(this.vehiclesEndpoint + '?' + this.toQueryString(filter))
+    return this.authHtpp.get(this.vehiclesEndpoint + '?' + this.toQueryString(filter))
         .map(res => res.json());
   }
   toQueryString(obj: any) {
@@ -25,22 +40,22 @@ export class VehicleService {
     return parts.join('&');
   }
   getFeatures() {
-    return this.http.get('/api/features').map(res => res.json());
+    return this.authHtpp.get('/api/features').map(res => res.json());
   }
 
   getMakes() {
-      return this.http.get('/api/makes').map(res => res.json());
+      return this.authHtpp.get('/api/makes').map(res => res.json());
   }
   create(vehicle: any) {
-    return this.http.post('/api/vehicles', vehicle).map(res => res.json());
+    return this.authHtpp.post('/api/vehicles', vehicle).map(res => res.json());
   }
   getVehicle(id: number) {
-      return this.http.get('/api/vehicles/' + id).map(res => res.json());
+      return this.authHtpp.get('/api/vehicles/' + id).map(res => res.json());
   }
   update(vehicle: SaveVehicle) {
-    return this.http.put('/api/vehicles/'+ vehicle.id,vehicle).map(res => res.json());
+    return this.authHtpp.put('/api/vehicles/'+ vehicle.id,vehicle).map(res => res.json());
   }
   delete(id: number) {
-    return this.http.delete('/api/vehicles/' + id).map(res => res.json());
+    return this.authHtpp.delete('/api/vehicles/' + id).map(res => res.json());
   }
 }

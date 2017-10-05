@@ -49,6 +49,9 @@ namespace ASP_NET_Core_Angular
                 options.Authority = "https://vegaproyecto.auth0.com/";
                 options.Audience = "https://api.vega.com";
             });
+            services.AddAuthorization(options => {
+                options.AddPolicy("RequiredAdminRole", policy => policy.RequireClaim("https://vega.com/roles", "Admin"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

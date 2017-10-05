@@ -18,7 +18,7 @@
                     </a>
                 </li>
                 <li [routerLinkActive]="['link-active']">
-                        <a (click)="auth.login()" *ngIf="!auth.isAuthenticated()">
+                        <a id="login" (click)="auth.login()" *ngIf="!auth.isAuthenticated()">
                             <span class='glyphicon glyphicon-user'></span> Login
                         </a>
                         <a (click)="auth.logout()" *ngIf="auth.isAuthenticated()">
@@ -40,11 +40,11 @@
                         <span class='glyphicon glyphicon-education'></span> Counter
                     </a>
                 </li>
-                <li [routerLinkActive]="['link-active']">
-                    <a [routerLink]="['/fetch-data']">
-                        <span class='glyphicon glyphicon-th-list'></span> Fetch data
-                    </a>
-                </li>
+                <li [routerLinkActive]="['link-active']" *ngIf="auth.isInRole('Admin')">
+                        <a [routerLink]="['/profile']">
+                            <span class='glyphicon glyphicon-th-list'></span> Profile
+                        </a>
+                    </li>
             </ul>
         </div>
     </div>

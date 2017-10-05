@@ -279,3 +279,46 @@ export class AppComponent {
 ------------------------------Cuando de error hacer esto--------------
 NodeInvocationException: Prerendering failed because of error: TypeError: require is not a function
 ir a index.cshtml y borrar el asp-prerender-module o poner una x alante de xasp
+
+-------------------------------Hosted Page para no tener el popout-----------
+
+en responsetype poner solo 'token' (quitar 'code' en 'token' : 'code') (para que no se vean las var) y customize login page true.
+copiar el login url en preview, select vega app y ponerlo en el href de login y quitar el ngclick
+
+para ver el profile y el email, agregar scope: 'openid profile email'  en el auth0.WebAuth
+----------------------------------Custom values en el hosted page-----------------
+      additionalSignUpFields: [
+        {
+          name: "name",
+          placeholder: "Name"
+        }
+      ],
+---------------------------------------Rules--------------------------------
+puedes  crear una funcion javascripr que se ejecuta cuando el usuario se logea
+crear rule para poner en el name el name custom del signupform:
+
+function (user, context, callback) {
+  if(user.user_metadata && user.user_metadata.name)
+      user.name = user.user_metadata.name;
+
+  callback(null, user, context);
+}
+----------------------------------Para los roles---------------
+1-)ir a users y en app_metadata poner "roles" : ["Admin", "Moderator"]
+2-) Crear rule
+function (user, context, callback) {
+   context.accessToken['https://vega.com/roles']= user.app_metadata.roles;
+  // TODO: implement your rule
+  callback(null, user, context);
+}
+---------------------AuthHttp para llamar los api con el token---------
+private authHtpp: AuthHttp en el constructor del service
+y en vez de http usar authHttp
+en el app modula poner  AUTH_PROVIDERS en el provider
+
+----------------------Restringir api access for roles-----------------
+1-)Startup.cs
+2-)            services.AddAuthorization(options => {
+                options.AddPolicy("RequiredAdminRole", policy => policy.RequireClaim("https://vega.com/roles", "Admin"));
+            });
+3-)

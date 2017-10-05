@@ -1,3 +1,6 @@
+import { AUTH_PROVIDERS, AuthHttp } from 'angular2-jwt';
+import { AdminAuthGuard } from './services/admin-auth-guard.service';
+import { AuthGuard } from './services/auth-guard.service';
 import { AuthService } from './services/auth.service';
 import { BrowserXhrWithProgress, ProgressService } from './services/progress.service';
 import { PhotoService } from './services/photo.service';
@@ -22,6 +25,7 @@ import { VehicleFormComponent } from './components/vehicle-form/vehicle-form.com
 import { VehicleListComponent } from './components/vehicle-list/vehicle-list.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
 import { ViewVehicleComponent } from './components/view-vehicle/view-vehicle.component';
+import { ProfileComponent } from './components/profile/profile.component';
 Raven 
 .config('https://ad82ca535ed449f2a111e15ac9dbd682@sentry.io/215493')
 .install();
@@ -36,7 +40,8 @@ Raven
         VehicleFormComponent,
         VehicleListComponent,
         PaginationComponent,
-        ViewVehicleComponent
+        ViewVehicleComponent,
+        ProfileComponent
     ],
     providers: [
         { provide: ErrorHandler, useClass: AppErrorHandler},
@@ -44,7 +49,10 @@ Raven
         VehicleService,
         PhotoService,
         ProgressService,
-        AuthService
+        AuthService,
+        AuthGuard,
+        AdminAuthGuard,
+        AUTH_PROVIDERS
     ],
     imports: [
         CommonModule,
@@ -60,6 +68,7 @@ Raven
             { path: 'home', component: HomeComponent },
             { path: 'counter', component: CounterComponent },
             { path: 'fetch-data', component: FetchDataComponent },
+            { path: 'profile', component: ProfileComponent, canActivate: [AdminAuthGuard] },
             { path: '**', redirectTo: 'home' }
         ])
     ]

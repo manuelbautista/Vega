@@ -87,6 +87,7 @@ namespace ASP.NET_Core_Angular.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<IActionResult> GetVehicle(int id)
         {
             var vehicle = await repository.GetVehicle(id);
@@ -100,6 +101,7 @@ namespace ASP.NET_Core_Angular.Controllers
             return Ok(vehicleResource);
         }
         [HttpGet]
+        [Authorize("RequiredAdminRole")]
         public async Task<QueryResultResource<VehicleResource>> GetVehicles(VehicleQueryResource filterResource)
         {
             var filter = mapper.Map<VehicleQueryResource, VehicleQuery>(filterResource);
